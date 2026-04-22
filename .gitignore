@@ -1,45 +1,45 @@
-__pycache__/
-*.py[cod]
-*$py.class
-*.so
-
-.venv/
-venv/
+# Environnements et dépendances
 env/
+venv/
+.venv/
 /bin/
 /include/
 /lib/
 /lib64/
 
-build/
-develop-eggs/
-dist/
-*.egg-info/
-.installed.cfg
-*.egg
-
+# Cache et fichiers temporaires
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
 .coverage
 .tox/
 htmlcov/
-
 *.log
 
+# Base de données (NE PAS GITER)
 *.db
 *.sqlite
 *.sqlite3
 
+# Fichiers de configuration sensibles
 .env
-alembic.ini
-alembic/versions/
-alembic/.versions.log
-alembic.pyc
+.env.*
 
+# Outils de développement
 .vscode/
 .idea/
 .DS_Store
 Thumbs.db
-
 .dockerignore
 
+# Exportation (Si nécessaire)
 project_dump.txt
 export_project.sh
+
+# --- CE QUE TU PEUX GARDER (Alembic) ---
+# ALEMBIC_CONFIG (On garde alembic.ini)
+# ALEMBIC_VERSIONS (On garde alembic/versions/)
+# Mais on peut ignorer les logs ou les fichiers compilés liés
+alembic/.versions.log
+alembic/*.pyc
