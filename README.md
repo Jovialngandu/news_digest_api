@@ -32,6 +32,12 @@ Installer les dépendances :
 ```bash
 pip install -r requirements.txt
 ```
+
+Migrations
+```bash
+python -m alembic upgrade head
+```
+
 ⚙️ Configuration
 
 Crée un fichier .env à la racine du projet en vous basant sur .env.example :
