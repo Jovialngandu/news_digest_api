@@ -37,17 +37,26 @@ def save_article(db: Session, article_data: dict, source_data: dict): # Renommé
     db.commit()
     return new_article
 
-def get_all_articles(db: Session):
-    return db.query(Article).all()
-
 def get_article_by_id(db: Session, article_id: int):
     return db.query(Article).filter(Article.id == article_id).first()
 
-def get_user_feed(db: Session, user_id: int):
-    # Logique pour construire le feed
-    articles = db.query(Article).all()
+
+def get_all_articles(db: Session, cursor: int = None, limit: int = 10):
+    query = db.query(Article).order_by(Article.id.desc())
+    if cursor:
+        query = query.filter(Article.id < cursor) # On prend les articles plus anciens que le dernier vu
+    return query.limit(limit).all()
+
+def get_user_feed(db: Session, user_id: int, cursor: int = None, limit: int = 10):
+    query = db.query(Article).order_by(Article.id.desc())
+    if cursor:
+        query = query.filter(Article.id < cursor)
+    articles = query.limit(limit).all()
+    
+    article_ids = [a.id for a in articles]
     user_interactions = db.query(UserInteraction).filter(
-        UserInteraction.user_id == user_id
+        UserInteraction.user_id == user_id,
+        UserInteraction.article_id.in_(article_ids)
     ).all()
     
     interaction_map = {i.article_id: i for i in user_interactions}

@@ -1,6 +1,6 @@
 
 from pydantic import BaseModel
-from typing import Optional
+from typing import Optional, Generic, TypeVar, List
 from app.schemas.source import SourceSchema
 from app.schemas.interaction import InteractionSchema
 from datetime import datetime
@@ -25,3 +25,13 @@ class ArticleSchema(BaseModel):
 
 class FeedArticle(ArticleSchema):
     interaction: Optional[InteractionSchema] = None
+    
+
+T = TypeVar("T")
+
+class PaginatedResponse(BaseModel, Generic[T]):
+    items: List[T]
+    next_cursor: Optional[int] = None
+
+    class Config:
+        from_attributes = True
