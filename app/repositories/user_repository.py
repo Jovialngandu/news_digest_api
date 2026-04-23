@@ -1,0 +1,21 @@
+from sqlalchemy.orm import Session
+from app.models.models import User
+from app.core.security import get_password_hash
+
+def get_user_by_email(db: Session, email: str):
+    return db.query(User).filter(User.email == email).first()
+
+def create_user(db: Session, user_data: dict):
+    hashed_password = get_password_hash(user_data["password"])
+    db_user = User(
+        email=user_data["email"],
+        username=user_data["username"],
+        hashed_password=hashed_password
+    )
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
+def get_user_by_id(db: Session, user_id: int):
+	return db.query(User).filter(User.id == user_id).first()
