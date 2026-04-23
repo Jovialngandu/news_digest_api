@@ -42,7 +42,7 @@ def get_all_articles(
     articles = article_repository.get_all_articles(db, cursor, limit)
     
     # Calcul du prochain curseur
-    next_cursor = articles[-1]['id'] if articles else None
+    next_cursor = articles[-1].id if articles else None
     
     return {
         "items": articles,
