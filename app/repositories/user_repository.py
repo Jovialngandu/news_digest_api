@@ -9,7 +9,6 @@ def create_user(db: Session, user_data: dict):
     hashed_password = get_password_hash(user_data["password"])
     db_user = User(
         email=user_data["email"],
-        username=user_data["username"],
         hashed_password=hashed_password
     )
     db.add(db_user)

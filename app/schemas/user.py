@@ -4,7 +4,6 @@ from app.schemas.token import Token
 
 class UserBase(BaseModel):
     email: EmailStr
-    username: str
 
 class UserCreate(UserBase):
     password: str 
