@@ -4,6 +4,8 @@ from urllib3.util.retry import Retry
 from app.core.config import settings
 from app.core.database import SessionLocal
 from app.repositories.article_repository import save_article
+from loguru import logger
+
 
 session = requests.Session()
 
@@ -53,4 +55,4 @@ def fetch_and_store_news():
             
     except requests.exceptions.RequestException as e:
         # Ici, on log l'erreur proprement sans faire planter le scheduler
-        print(f"CRITICAL: Le fetch des news a échoué après retries: {e}")
+        logger.critical(f"Le fetch des news a échoué après retries: {e}")
