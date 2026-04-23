@@ -10,13 +10,13 @@ router = APIRouter()
 def get_all_articles(db: Session = Depends(get_db)):
     return article_repository.get_all_articles(db)
 
+@router.get("/feed", response_model=list[FeedArticle])
+def get_feed(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
+    return article_repository.get_user_feed(db, current_user.id)
+
 @router.get("/{article_id}", response_model=ArticleSchema)
 def get_article(article_id: int, db: Session = Depends(get_db)):
     article = article_repository.get_article_by_id(db, article_id)
     if not article:
         raise HTTPException(status_code=404, detail="Article non trouvé")
     return article
-
-@router.get("/feed", response_model=list[FeedArticle])
-def get_feed(db: Session = Depends(get_db), current_user = Depends(get_current_user)):
-    return article_repository.get_user_feed(db, current_user["id"])
