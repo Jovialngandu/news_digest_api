@@ -18,7 +18,7 @@ async def lifespan(app: FastAPI):
     print("Démarrage de l'application...")
     Base.metadata.create_all(bind=engine)
     
-    scheduler.add_job(fetch_and_store_news, 'interval', minutes=13)
+    scheduler.add_job(fetch_and_store_news, 'interval', minutes=24)
     scheduler.start()
 	
     asyncio.create_task(asyncio.to_thread(fetch_and_store_news))    
