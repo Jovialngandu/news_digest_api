@@ -19,8 +19,8 @@ origins = [
     "http://127.0.0.1:8081", 
     "https://mon-site-web.com",
     "http://localhost:3000",
-    "https://techfeed-ten.vercel.app/",
-    "techfeed-89vmwtj1p-jovialngandu2-2029s-projects.vercel.app",
+    "https://techfeed-ten.vercel.app",
+    "https://techfeed-89vmwtj1p-jovialngandu2-2029s-projects.vercel.app",
 ]
 @asynccontextmanager
 async def lifespan(app: FastAPI):
