@@ -6,6 +6,7 @@ from app.core.database import engine, Base
 from app.api.v1.route import api_router
 from app.core.logger import log_requests
 from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 from loguru import logger
 import asyncio
@@ -13,12 +14,20 @@ import asyncio
 # Initialisation du scheduler
 scheduler = BackgroundScheduler()
 
+origins = [
+    "http://localhost:8081",
+    "http://127.0.0.1:8081", 
+    "https://mon-site-web.com",
+    "http://localhost:3000",
+    "https://techfeed-ten.vercel.app/",
+    "techfeed-89vmwtj1p-jovialngandu2-2029s-projects.vercel.app",
+]
 @asynccontextmanager
 async def lifespan(app: FastAPI):
     print("Démarrage de l'application...")
     Base.metadata.create_all(bind=engine)
     
-    scheduler.add_job(fetch_and_store_news, 'interval', minutes=30)
+    scheduler.add_job(fetch_and_store_news, 'interval', minutes=24)
     scheduler.start()
 	
     asyncio.create_task(asyncio.to_thread(fetch_and_store_news))    
@@ -28,8 +37,16 @@ async def lifespan(app: FastAPI):
     scheduler.shutdown()
 
 app = FastAPI(title="News Info Center API", lifespan=lifespan)
+
 app.include_router(api_router, prefix="/api/v1")
 app.add_middleware(BaseHTTPMiddleware, dispatch=log_requests)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 @app.exception_handler(Exception)
 async def global_exception_handler(request: Request, exc: Exception):
